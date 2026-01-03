@@ -1,51 +1,56 @@
-/* ===============================
-   iPhone / Mobile UX Enhancements
+/* ===========================
+   MOBILE LAYOUT (REAL FIX)
    Target: iPhone 16 Pro Max
-================================ */
-
-/* iOS safe areas */
-body {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* ---- Top Bar ---- */
-.map-topbar {
-  backdrop-filter: blur(14px);
-  background: rgba(12, 14, 18, 0.75);
-  padding: 10px 12px;
-  border-radius: 16px;
-}
-
-/* Search input – more native feel */
-#search {
-  height: 48px;
-  font-size: 16px; /* prevents iOS zoom */
-  border-radius: 16px;
-}
-
-/* Search button */
-.search-btn {
-  height: 48px;
-  width: 48px;
-  font-size: 18px;
-}
-
-/* Icon buttons – thumb friendly */
-.icon-btn {
-  height: 48px;
-  width: 48px;
-  font-size: 20px;
-}
-
-/* ---- Sidebar → Bottom Sheet on Mobile ---- */
+=========================== */
 @media (max-width: 768px) {
+
+  /* ---- Top Bar becomes vertical stack ---- */
+  .map-topbar {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: none;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  #search {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  .search-btn {
+    height: 52px;
+    width: 52px;
+  }
+
+  /* ---- Button row ---- */
+  .map-topbar > button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  /* Hide less-important buttons */
+  #exportBtn,
+  #clearAllBtn {
+    display: none;
+  }
+
+  /* ---- Sidebar becomes bottom sheet ---- */
   .sidebar {
     left: 0;
     right: 0;
     bottom: 0;
     top: auto;
     width: 100%;
-    height: 75vh;
+    height: 70vh;
     transform: translateY(100%);
     border-radius: 20px 20px 0 0;
   }
@@ -54,75 +59,34 @@ body {
     transform: translateY(0);
   }
 
-  .sidebar-header {
-    padding: 16px;
+  /* ---- Saved cards stack cleanly ---- */
+  .saved-card {
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .saved-list {
-    padding-bottom: env(safe-area-inset-bottom);
+  .saved-actions {
+    justify-content: space-between;
   }
-}
 
-/* ---- Saved Cards ---- */
-.saved-card {
-  padding: 14px;
-  gap: 12px;
-}
+  .small-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
 
-.saved-title {
-  font-size: 16px;
-}
-
-.saved-actions .small-btn {
-  padding: 8px 10px;
-  font-size: 14px;
-}
-
-/* ---- Results dropdown ---- */
-.results-card {
-  border-radius: 16px;
-  max-height: 50vh;
-}
-
-/* ---- Modal (Memories) ---- */
-@media (max-width: 768px) {
+  /* ---- Modals full-screen ---- */
   .modal-content {
     width: 100%;
     height: 90vh;
     border-radius: 20px 20px 0 0;
   }
 
-  .modal-body {
-    padding: 16px;
+  /* ---- Memories grid ---- */
+  .memories-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-}
 
-/* ---- Memories Grid ---- */
-.memories-grid {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-}
-
-.memory-item img {
-  height: 160px;
-}
-
-/* ---- Image Viewer ---- */
-.viewer-content img {
-  border-radius: 14px;
-}
-
-/* ---- Buttons ---- */
-.primary,
-.secondary,
-.danger {
-  min-height: 44px;
-  font-size: 15px;
-}
-
-/* ---- Map Tap Comfort ---- */
-.leaflet-control-zoom a {
-  width: 44px !important;
-  height: 44px !important;
-  line-height: 44px !important;
-  font-size: 18px !important;
+  .memory-item img {
+    height: 140px;
+  }
 }
