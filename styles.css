@@ -1,0 +1,658 @@
+:root {
+    --bg: #0b0d10;
+    --panel: #0f1114;
+    --muted: #9aa3ad;
+    --accent: #3ea6ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --card: #0f1316;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body,
+#main {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto;
+    background: var(--bg);
+    color: #e6eef6
+}
+
+/* Map Topbar - New Layout */
+.map-topbar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: fixed;
+    z-index: 1400;
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.map-topbar .search-wrapper {
+    position: relative;
+    flex: 1;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Search bar */
+#search {
+    flex: 1;
+    height: 44px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 0 16px;
+    color: #e6eef6;
+    outline: none;
+    font-size: 15px;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+}
+
+#search::placeholder {
+    color: var(--muted)
+}
+
+.search-btn {
+    height: 40px;
+    width: 48px;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent);
+    color: #071428;
+    cursor: pointer;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.results-card {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    right: 0;
+    max-height: 360px;
+    overflow: auto;
+    background: linear-gradient(180deg, rgba(12, 14, 16, 0.98), rgba(8, 9, 11, 0.98));
+    border-radius: 14px;
+    margin-top: 8px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 8px;
+    display: none;
+    z-index: 1410;
+}
+
+.result-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+    cursor: pointer;
+    transition: background .12s;
+}
+
+.result-item:hover {
+    background: rgba(255, 255, 255, 0.02)
+}
+
+.result-title {
+    font-size: 15px;
+    font-weight: 600
+}
+
+.result-sub {
+    font-size: 13px;
+    color: var(--muted)
+}
+
+/* Buttons */
+.icon-btn {
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    color: #e6eef6;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s;
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.5);
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.04)
+}
+
+.primary {
+    background: var(--accent);
+    border: none;
+    color: #071428;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity .15s;
+}
+
+.primary:hover {
+    opacity: 0.9
+}
+
+.secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background .15s;
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.5);
+}
+
+.secondary:hover {
+    background: rgba(255, 255, 255, 0.02)
+}
+
+.danger {
+    background: transparent;
+    border: 1px solid rgba(255, 60, 60, 0.16);
+    color: #ff6961;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background .15s;
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.5);
+}
+
+.danger:hover {
+    background: rgba(255, 60, 60, 0.05)
+}
+
+/* Responsive adjustments */
+@media (max-width:900px) {
+    .map-topbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .topbar-left {
+        order: 1;
+    }
+
+    .search-wrapper {
+        order: 2;
+        width: 100%;
+        max-width: none;
+    }
+
+    .topbar-right {
+        order: 3;
+    }
+}
+
+@media (max-width:640px) {
+
+    .topbar-left,
+    .topbar-right {
+        gap: 6px;
+    }
+
+    .secondary,
+    .danger {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+}
+
+/* Sidebar & saved list */
+.sidebar {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    bottom: 12px;
+    width: 340px;
+    transform: translateX(-380px);
+    transition: transform 260ms ease;
+    background: linear-gradient(180deg, var(--panel), rgba(8, 9, 11, 0.98));
+    border-radius: 12px;
+    z-index: 1500;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 40px rgba(2, 6, 23, 0.8);
+}
+
+.sidebar.open {
+    transform: translateX(0)
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.saved-list {
+    padding: 12px;
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.saved-card {
+    background: var(--card);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.saved-left {
+    flex: 1
+}
+
+.saved-title {
+    font-weight: 700
+}
+
+.saved-sub {
+    font-size: 13px;
+    color: var(--muted)
+}
+
+.saved-actions {
+    display: flex;
+    gap: 8px
+}
+
+.small-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 6px 8px;
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    transition: background .15s;
+}
+
+.small-btn:hover {
+    background: rgba(255, 255, 255, 0.02)
+}
+
+.sidebar-footer {
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+/* Pages & map */
+.page {
+    display: none;
+    height: 100%
+}
+
+.page.active {
+    display: block;
+    height: 100%
+}
+
+.map {
+    height: 100vh;
+    width: 100vw
+}
+
+/* Login card */
+.login-card {
+    width: 360px;
+    margin: 120px auto;
+    padding: 22px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 12px 40px rgba(2, 6, 23, 0.7);
+    text-align: center;
+}
+
+.login-card h2 {
+    margin: 0 0 8px
+}
+
+.login-card label {
+    display: block;
+    text-align: left;
+    margin: 10px 0
+}
+
+.login-card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    background: transparent;
+    color: inherit;
+    outline: none;
+}
+
+.login-card input:focus {
+    border-color: rgba(255, 255, 255, 0.08)
+}
+
+.login-card .primary {
+    margin-top: 8px;
+    width: 100%
+}
+
+/* Memories Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: linear-gradient(180deg, var(--panel), rgba(8, 9, 11, 0.98));
+    border-radius: 16px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(2, 6, 23, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.upload-section {
+    background: var(--card);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#memory-note {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.01);
+    color: inherit;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+}
+
+#memory-note:focus {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.memories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.memory-item {
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: transform .15s, box-shadow .15s;
+    position: relative;
+}
+
+.memory-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
+}
+
+.memory-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    display: block;
+}
+
+.memory-info {
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.memory-date {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.delete-memory {
+    background: transparent;
+    border: none;
+    color: #ff6961;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background .15s;
+}
+
+.delete-memory:hover {
+    background: rgba(255, 60, 60, 0.1);
+}
+
+.memory-note {
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    margin: 0;
+}
+
+.note-item {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.note-content {
+    flex: 1;
+}
+
+.note-content p {
+    margin: 0 0 6px 0;
+    line-height: 1.5;
+}
+
+.file-item {
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.file-icon {
+    font-size: 32px;
+}
+
+.file-name {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Image Viewer */
+.image-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    padding: 20px;
+}
+
+.viewer-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.viewer-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.close-viewer {
+    position: absolute;
+    top: -50px;
+    right: 0;
+}
+
+.marker-popup {
+    min-width: 180px;
+}
+
+@media (max-width:640px) {
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .memories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .memory-item img {
+        height: 150px;
+    }
+}
+/* Map Topbar - Centered Layout (REVISED) */
+.map-topbar {
+    /* New Positioning for Centering */
+    position: fixed;
+    top: 24px; /* Move slightly down for better breathing room */
+    left: 50%;
+    transform: translateX(-50%); /* Crucial for horizontal centering */
+
+    /* Layout & Appearance */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1400;
+    
+    /* Give it a max-width so it doesn't stretch across the entire screen */
+    max-width: 90%; 
+    width: 100%;
+}
+/* Sidebar Toggle Button (REVISED) */
+.sidebar-toggle {
+    /* If this button is meant to be on the bottom, use this position: */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1500; /* Must be higher than map controls (1400) */
+    
+    /* Remove its sizing/style from the main flow if it was placed there */
+    /* This button should likely be placed *outside* the .map-topbar in HTML */
+}@media (max-width:900px) {
+    /* Remove 'flex-wrap: wrap' if you want it to stay in one line as long as possible */
+    /* .map-topbar {
+        flex-wrap: wrap; 
+    } */
+
+    /* Keep items grouped, but let the whole bar be centered (handled by new .map-topbar) */
+    /* You might just want to reduce the max-width of the search bar */
+    .map-topbar .search-wrapper {
+        max-width: 400px; /* Make it a bit smaller on medium screens */
+    }
+
+    /* ONLY if you want it to stack, otherwise delete this media block */
+    @media (max-width: 600px) {
+        .map-topbar {
+             flex-wrap: wrap;
+             top: 12px;
+        }
+        .map-topbar .search-wrapper {
+             order: 2;
+             width: 100%;
+             max-width: none;
+        }
+        .topbar-right {
+             order: 3;
+        }
+    }
+}
