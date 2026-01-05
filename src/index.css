@@ -945,7 +945,7 @@ body {
     }
 
     .map-topbar {
-        top: calc(50px + env(safe-area-inset-top, 0px));
+        top: calc(8px + env(safe-area-inset-top, 0px));
         max-width: 95%;
     }
 
@@ -1333,8 +1333,10 @@ body {
         bottom: 90px;
     }
 }
+
 /* Allow text selection in inputs */
-input, textarea {
+input,
+textarea {
     -webkit-user-select: text;
     user-select: text;
     touch-action: auto;
