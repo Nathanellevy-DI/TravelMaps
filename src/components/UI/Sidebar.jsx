@@ -31,8 +31,8 @@ export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme }) {
                     </button>
                 </div>
 
-                <div className="category-filter-wrapper" style={{ padding: '0 16px 12px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
+                <div className="category-filter-wrapper" style={{ padding: '0 16px 12px 16px', borderBottom: '1px solid var(--border)' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-sub)' }}>
                         <Filter size={14} />
                         Filter by:
                     </label>
@@ -44,9 +44,9 @@ export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme }) {
                             marginTop: '8px',
                             padding: '8px',
                             borderRadius: '8px',
-                            backgroundColor: 'rgba(255,255,255,0.05)',
-                            color: 'white',
-                            border: '1px solid rgba(255,255,255,0.1)'
+                            backgroundColor: 'var(--input-bg)',
+                            color: 'var(--text-main)',
+                            border: '1px solid var(--border)'
                         }}
                     >
                         <option value="All">All Categories</option>
@@ -71,8 +71,8 @@ export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme }) {
                                             fontSize: '10px',
                                             padding: '2px 6px',
                                             borderRadius: '4px',
-                                            backgroundColor: 'rgba(255,255,255,0.1)',
-                                            color: place.color || '#white'
+                                            backgroundColor: 'var(--input-bg)',
+                                            color: place.color || 'var(--text-main)'
                                         }}>
                                             {place.category || 'Default'}
                                         </span>
