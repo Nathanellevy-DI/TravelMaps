@@ -154,13 +154,13 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(15, 17, 20, 0.9);
+    background: var(--panel);
     backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--border);
     padding: 10px 8px;
     justify-content: space-around;
     z-index: 1500;
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
     padding-bottom: env(safe-area-inset-bottom, 12px);
 }
 
@@ -579,9 +579,9 @@ body {
     margin: 100px auto;
     padding: 32px;
     border-radius: 16px;
-    background: linear-gradient(180deg, rgba(15, 17, 20, 0.95), rgba(10, 11, 13, 0.95));
+    background: var(--panel);
     border: 1px solid var(--border);
-    box-shadow: 0 12px 40px rgba(2, 6, 23, 0.9);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
@@ -947,7 +947,7 @@ body {
         height: 44px;
         padding: 0 14px;
         font-size: 14px;
-        background: linear-gradient(180deg, rgba(15, 17, 20, 0.95), rgba(10, 11, 13, 0.95));
+        background: var(--panel);
     }
 
     .search-btn {
@@ -1013,7 +1013,7 @@ body {
     .login-card {
         margin: 60px auto;
         padding: 24px;
-        background: linear-gradient(180deg, rgba(15, 17, 20, 0.95), rgba(10, 11, 13, 0.95));
+        background: var(--panel);
     }
 
     .modal-content {
@@ -1183,13 +1183,13 @@ body {
 }
 
 .custom-dialog {
-    background: linear-gradient(180deg, #13151a, #0e1014);
+    background: var(--panel);
     border-radius: 16px;
     padding: 32px;
     width: 90%;
     max-width: 450px;
     border: 2px solid var(--border);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1239,7 +1239,7 @@ body {
 
 .custom-dialog-input:focus {
     border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--card-hover);
 }
 
 .custom-dialog-input::placeholder {
