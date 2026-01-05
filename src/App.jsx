@@ -6,6 +6,7 @@ import Sidebar from './components/UI/Sidebar';
 import MapComponent from './components/Map/MapComponent';
 import PlaceDetailsModal from './components/Modals/PlaceDetailsModal';
 import LoginPage from './components/Auth/LoginPage';
+import InstallPrompt from './components/UI/InstallPrompt';
 import { useDialog } from './hooks/useDialog.jsx';
 import { Menu, MapPin, LogOut } from 'lucide-react';
 import './index.css';
@@ -175,6 +176,9 @@ function AppContent({ user, onLogout }) {
 
         {/* Custom Dialog */}
         {DialogComponent}
+
+        {/* Install Prompt */}
+        <InstallPrompt />
       </section>
     </main>
   );
