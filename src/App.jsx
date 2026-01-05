@@ -7,6 +7,7 @@ import MapComponent from './components/Map/MapComponent';
 import PlaceDetailsModal from './components/Modals/PlaceDetailsModal';
 import LoginPage from './components/Auth/LoginPage';
 import { useDialog } from './hooks/useDialog.jsx';
+import { Menu, MapPin, Download, Trash2, LogOut } from 'lucide-react';
 import './index.css';
 
 
@@ -16,11 +17,8 @@ function AppContent({ user, onLogout }) {
   const { showPrompt, DialogComponent } = useDialog();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [tempMarker, setTempMarker] = useState(null);
-
-  // Unified modal state
+  const [map, setMap] = useState(null);
   const [detailsModalId, setDetailsModalId] = useState(null);
-
-  const mapRef = useRef(null);
 
   useEffect(() => {
     // Listen for requests to open details (from map or sidebar)
@@ -37,8 +35,7 @@ function AppContent({ user, onLogout }) {
 
 
   const handleLocationClick = () => {
-    if (!mapRef.current) return;
-    const map = mapRef.current;
+    if (!map) return;
 
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -85,10 +82,10 @@ function AppContent({ user, onLogout }) {
 
 
   const handleSearchResult = (result) => {
-    if (!mapRef.current) return;
+    if (!map) return;
 
     // Fly to location
-    mapRef.current.flyTo([result.lat, result.lon], 15);
+    map.flyTo([result.lat, result.lon], 15);
 
     // Set temporary pin
     setTempMarker({
@@ -115,11 +112,11 @@ function AppContent({ user, onLogout }) {
 
   return (
     <main id="main">
-      <section id="mapPage" className="page active" style={{ position: 'relative' }}>
+      <section id="mapPage" className="page active" style={{ position: 'relative', height: '100%', width: '100%' }}>
         <TopBar
           onMenuClick={() => setIsSidebarOpen(true)}
           onLocationClick={handleLocationClick}
-          map={mapRef.current}
+          map={map}
           onSearchResult={handleSearchResult}
           user={user}
           onLogout={onLogout}
@@ -128,17 +125,41 @@ function AppContent({ user, onLogout }) {
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
-          map={mapRef.current}
+          map={map}
           user={user}
         />
 
         <MapComponent
-          mapRef={mapRef}
+          mapRef={setMap}
           onMapClick={onMapClick}
           tempMarker={tempMarker}
         />
 
         <PinControls />
+
+        {/* Mobile Bottom Navigation */}
+        <div className="mobile-bottom-bar">
+          <button className="mobile-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={20} />
+            <span className="mobile-btn-label">Places</span>
+          </button>
+          <button className="mobile-btn" onClick={handleLocationClick}>
+            <MapPin size={20} />
+            <span className="mobile-btn-label">My Location</span>
+          </button>
+          <button className="mobile-btn" onClick={() => document.getElementById('exportBtn')?.click()}>
+            <Download size={20} />
+            <span className="mobile-btn-label">Export</span>
+          </button>
+          <button className="mobile-btn" onClick={() => document.getElementById('clearAllBtn')?.click()}>
+            <Trash2 size={20} />
+            <span className="mobile-btn-label">Clear</span>
+          </button>
+          <button className="mobile-btn" onClick={onLogout}>
+            <LogOut size={20} />
+            <span className="mobile-btn-label">Logout</span>
+          </button>
+        </div>
 
         {detailsModalId && (
           <PlaceDetailsModal
@@ -180,9 +201,11 @@ export default function App() {
     try {
       localStorage.removeItem('travelmaps:currentUser');
     } catch (e) {
-      console.error('Failed to clear user session:', e);
+      console.error('Logout error:', e);
     }
   };
+
+  console.log('App State:', { user, version: '1.2' });
 
   if (!user) {
     return <LoginPage onLogin={handleLogin} />;
