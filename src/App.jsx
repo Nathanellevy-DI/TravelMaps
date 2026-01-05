@@ -19,6 +19,14 @@ function AppContent({ user, onLogout }) {
   const [tempMarker, setTempMarker] = useState(null);
   const [map, setMap] = useState(null);
   const [detailsModalId, setDetailsModalId] = useState(null);
+  const [theme, setTheme] = useState(() => localStorage.getItem('travelmaps:theme') || 'dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('travelmaps:theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   useEffect(() => {
     // Listen for requests to open details (from map or sidebar)
@@ -120,6 +128,8 @@ function AppContent({ user, onLogout }) {
           onSearchResult={handleSearchResult}
           user={user}
           onLogout={onLogout}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
 
         <Sidebar
@@ -127,12 +137,15 @@ function AppContent({ user, onLogout }) {
           onClose={() => setIsSidebarOpen(false)}
           map={map}
           user={user}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
 
         <MapComponent
           mapRef={setMap}
           onMapClick={onMapClick}
           tempMarker={tempMarker}
+          theme={theme}
         />
 
         <PinControls />

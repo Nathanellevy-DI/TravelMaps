@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Download, Trash2, Menu, LogOut } from 'lucide-react';
+import { Search, MapPin, Download, Trash2, Menu, LogOut, Sun, Moon } from 'lucide-react';
 import { usePlaces } from '../../contexts/PlacesContext';
 
 const GEOAPIFY_KEY = '8dce2a1641ca4c0bac83f3feafc51bbf';
 
-export default function TopBar({ onMenuClick, onLocationClick, map, onSearchResult, user, onLogout }) {
+export default function TopBar({ onMenuClick, onLocationClick, map, onSearchResult, user, onLogout, theme, toggleTheme }) {
     const { addPlace, savedPlaces, removePlace, clearAll } = usePlaces();
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -146,6 +146,13 @@ export default function TopBar({ onMenuClick, onLocationClick, map, onSearchResu
             </div>
 
             <div className="desktop-buttons">
+                <button
+                    className="icon-btn"
+                    onClick={toggleTheme}
+                    title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+                >
+                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                </button>
                 <button
                     className="secondary"
                     onClick={onLogout}

@@ -31,7 +31,7 @@ function MapEvents({ onMapClick }) {
     return null;
 }
 
-export default function MapComponent({ mapRef, onMapClick, tempMarker }) {
+export default function MapComponent({ mapRef, onMapClick, tempMarker, theme }) {
     const { savedPlaces, activePlaceId, setActivePlaceId, creationSettings } = usePlaces();
 
     const handleOpenDetails = (placeId) => {
@@ -52,8 +52,12 @@ export default function MapComponent({ mapRef, onMapClick, tempMarker }) {
                 zoomControl={false}
             >
                 <TileLayer
+                    key={theme}
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+                    url={theme === 'light'
+                        ? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
+                        : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+                    }
                     maxZoom={19}
                 />
 

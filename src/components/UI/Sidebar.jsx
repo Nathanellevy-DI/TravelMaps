@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { X, Camera, MapPin, Trash2, Filter } from 'lucide-react';
+import { X, Camera, MapPin, Trash2, Filter, Sun, Moon } from 'lucide-react';
 import { usePlaces } from '../../contexts/PlacesContext';
 
-export default function Sidebar({ isOpen, onClose, map }) {
+export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme }) {
     const { savedPlaces, removePlace, categories } = usePlaces();
     const [filterCategory, setFilterCategory] = useState('All');
 
@@ -96,7 +96,17 @@ export default function Sidebar({ isOpen, onClose, map }) {
                         ))
                     )}
                 </div>
-            </aside>
+                <div className="sidebar-footer">
+                    <button
+                        className="secondary"
+                        onClick={toggleTheme}
+                        style={{ flex: 1, display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                        {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                    </button>
+                </div>
+            </aside >
         </>
     );
 }
