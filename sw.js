@@ -1,4 +1,5 @@
-const CACHE_NAME = 'travelmaps-v2';
+const CACHE_NAME = 'travelmaps-v3';
+const APP_VERSION = 1; // Increment when adding new features
 const urlsToCache = [
     '/TravelMaps.github.io/',
     '/TravelMaps.github.io/index.html'
@@ -13,7 +14,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activate and clean up old caches
+// Activate and clean up old caches, set badge for new version
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -21,7 +22,13 @@ self.addEventListener('activate', (event) => {
                 cacheNames.filter((name) => name !== CACHE_NAME)
                     .map((name) => caches.delete(name))
             );
-        }).then(() => self.clients.claim())
+        }).then(() => {
+            // Set badge to notify user of update
+            if ('setAppBadge' in navigator) {
+                navigator.setAppBadge(1).catch(() => { });
+            }
+            return self.clients.claim();
+        })
     );
 });
 
