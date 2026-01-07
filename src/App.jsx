@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { PlacesProvider, usePlaces } from './contexts/PlacesContext';
 import TopBar from './components/UI/TopBar';
 import PinControls from './components/UI/PinControls';
@@ -8,12 +9,13 @@ import PlaceDetailsModal from './components/Modals/PlaceDetailsModal';
 import LoginPage from './components/Auth/LoginPage';
 import InstallPrompt from './components/UI/InstallPrompt';
 import { useDialog } from './hooks/useDialog.jsx';
-import { Menu, MapPin, LogOut } from 'lucide-react';
+import { Menu, MapPin, LogOut, Loader2 } from 'lucide-react';
 import './index.css';
 
 
 
-function AppContent({ user, onLogout }) {
+function AppContent() {
+  const { user, logout } = useAuth();
   const { addPlace } = usePlaces();
   const { showPrompt, DialogComponent } = useDialog();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -119,6 +121,9 @@ function AppContent({ user, onLogout }) {
     });
   };
 
+  // Get display name from user object or string
+  const displayName = typeof user === 'object' ? (user.name || user.email) : user;
+
   return (
     <main id="main">
       <section id="mapPage" className="page active" style={{ position: 'relative', height: '100%', width: '100%' }}>
@@ -127,8 +132,8 @@ function AppContent({ user, onLogout }) {
           onLocationClick={handleLocationClick}
           map={map}
           onSearchResult={handleSearchResult}
-          user={user}
-          onLogout={onLogout}
+          user={displayName}
+          onLogout={logout}
           theme={theme}
           toggleTheme={toggleTheme}
         />
@@ -137,7 +142,7 @@ function AppContent({ user, onLogout }) {
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           map={map}
-          user={user}
+          user={displayName}
           theme={theme}
           toggleTheme={toggleTheme}
         />
@@ -161,7 +166,7 @@ function AppContent({ user, onLogout }) {
             <MapPin size={20} />
             <span className="mobile-btn-label">My Location</span>
           </button>
-          <button className="mobile-btn" onClick={onLogout}>
+          <button className="mobile-btn" onClick={logout}>
             <LogOut size={20} />
             <span className="mobile-btn-label">Logout</span>
           </button>
@@ -184,45 +189,51 @@ function AppContent({ user, onLogout }) {
   );
 }
 
-export default function App() {
-  const [user, setUser] = useState(() => {
-    // Load user from localStorage on initial mount
-    try {
-      return localStorage.getItem('travelmaps:currentUser');
-    } catch {
-      return null;
-    }
-  });
-
-  const handleLogin = (name) => {
-    const username = name || 'Traveler';
-    setUser(username);
-    // Persist user to localStorage
-    try {
-      localStorage.setItem('travelmaps:currentUser', username);
-    } catch (e) {
-      console.error('Failed to save user session:', e);
-    }
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    try {
-      localStorage.removeItem('travelmaps:currentUser');
-    } catch (e) {
-      console.error('Logout error:', e);
-    }
-  };
-
-  console.log('App State:', { user, version: '1.2' });
-
-  if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
+function AuthenticatedApp() {
+  const { user } = useAuth();
 
   return (
-    <PlacesProvider user={user} key={user}>
-      <AppContent user={user} onLogout={handleLogout} />
+    <PlacesProvider user={typeof user === 'object' ? user.id : user} key={typeof user === 'object' ? user.id : user}>
+      <AppContent />
     </PlacesProvider>
   );
+}
+
+function LoadingScreen() {
+  return (
+    <div style={{
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--bg, #0b0d10)',
+      color: 'var(--accent, #3ea6ff)',
+    }}>
+      <Loader2 size={48} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
+}
+
+function AppRouter() {
+  const { user, isLoading, isAuthenticated } = useAuth();
+
+  console.log('App State:', { user, isAuthenticated, version: '2.0' });
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+
+  return <AuthenticatedApp />;
 }
