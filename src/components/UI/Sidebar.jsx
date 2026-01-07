@@ -19,7 +19,7 @@ export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme, user
 
     const handleBackup = async () => {
         try {
-            await exportBackup(savedPlaces, user?.name || user?.email || 'Guest');
+            await exportBackup(savedPlaces, user?.name || user?.email || 'Guest', categories);
         } catch (error) {
             alert('Export failed: ' + error.message);
         }
@@ -40,7 +40,7 @@ export default function Sidebar({ isOpen, onClose, map, theme, toggleTheme, user
 
         const result = await importBackup(file);
         if (result.success) {
-            restoreData(result.places);
+            restoreData(result.places, result.categories);
             alert('Backup restored successfully!');
         } else {
             alert('Restore failed: ' + result.error);

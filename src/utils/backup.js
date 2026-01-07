@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 /**
  * Export all places and their data to a ZIP file
  */
-export async function exportBackup(places, username) {
+export async function exportBackup(places, username, categories = []) {
     const zip = new JSZip();
 
     // Create backup data
@@ -12,6 +12,7 @@ export async function exportBackup(places, username) {
         version: 1,
         exportDate: new Date().toISOString(),
         username: username,
+        categories: categories,
         places: places.map(place => ({
             ...place,
             // Store photo data separately in the zip
@@ -95,6 +96,7 @@ export async function importBackup(file) {
         return {
             success: true,
             places: restoredPlaces,
+            categories: backupData.categories || [],
             username: backupData.username,
             exportDate: backupData.exportDate
         };

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { X, Lock, Clock, FileText, MapPin, Upload } from 'lucide-react';
+import { X, Lock, Clock, FileText, MapPin, Upload, Edit2, Plus } from 'lucide-react';
 import { usePlaces } from '../../contexts/PlacesContext';
 import ImageLightbox from '../UI/ImageLightbox';
 import { useDialog } from '../../hooks/useDialog.jsx';
 
 export default function PlaceDetailsModal({ placeId, onClose }) {
-    const { getPlace, submitRequest, approvePlace, addMemory, removeMemory } = usePlaces();
+    const { getPlace, submitRequest, approvePlace, addMemory, removeMemory, categories, addCategory, updatePlaceCategory } = usePlaces();
     const place = getPlace(placeId);
     const { showPrompt, DialogComponent } = useDialog();
 
@@ -21,6 +21,9 @@ export default function PlaceDetailsModal({ placeId, onClose }) {
 
     // Lightbox state
     const [lightboxImage, setLightboxImage] = useState(null);
+
+    // Edit Category state
+    const [isEditingCategory, setIsEditingCategory] = useState(false);
 
     if (!place) return null;
 
@@ -80,6 +83,20 @@ export default function PlaceDetailsModal({ placeId, onClose }) {
         setUploadFile(null);
     };
 
+    const handleCategoryChange = (e) => {
+        const val = e.target.value;
+        if (val === '__new__') {
+            const newCat = prompt('Enter name for new category:');
+            if (newCat && newCat.trim()) {
+                addCategory(newCat.trim());
+                updatePlaceCategory(placeId, newCat.trim());
+            }
+        } else if (val !== '') {
+            updatePlaceCategory(placeId, val);
+        }
+        setIsEditingCategory(false);
+    };
+
     return (
         <div className="modal-overlay" onClick={(e) => e.target.className === 'modal-overlay' && onClose()}>
             <div className="modal-content" style={{ maxWidth: '700px', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
@@ -88,9 +105,40 @@ export default function PlaceDetailsModal({ placeId, onClose }) {
                 <div className="modal-header">
                     <div>
                         <h2 style={{ margin: 0, fontSize: '24px' }}>{place.name}</h2>
-                        <span className="badge" style={{ backgroundColor: place.color, color: '#fff', marginTop: '8px' }}>
-                            {place.category}
-                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                            {isEditingCategory ? (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <select
+                                        className="category-select"
+                                        value={place.category}
+                                        onChange={handleCategoryChange}
+                                        autoFocus
+                                        onBlur={() => setTimeout(() => setIsEditingCategory(false), 200)}
+                                        style={{ padding: '4px 8px', borderRadius: '4px', fontSize: '12px' }}
+                                    >
+                                        <option value="Default">Default</option>
+                                        {categories.filter(c => c !== 'Default').map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                        <option value="__new__">+ Create New...</option>
+                                    </select>
+                                </div>
+                            ) : (
+                                <>
+                                    <span className="badge" style={{ backgroundColor: place.color, color: '#fff' }}>
+                                        {place.category}
+                                    </span>
+                                    <button
+                                        className="icon-btn tiny"
+                                        onClick={() => setIsEditingCategory(true)}
+                                        title="Edit Category"
+                                        style={{ padding: '4px', opacity: 0.6 }}
+                                    >
+                                        <Edit2 size={14} />
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                     <button className="icon-btn" onClick={onClose}><X size={24} /></button>
                 </div>
